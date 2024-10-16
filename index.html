@@ -35,18 +35,6 @@
             transition: color 1s ease;
         }
 
-        #popupImage {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translate(-50%, 0);
-            max-width: 90vw; /* 使用响应式宽度 */
-            height: auto; /* 保持纵横比 */
-            display: none;
-            z-index: 20;
-            cursor: move;
-        }
-
         canvas {
             position: absolute;
             top: 0;
@@ -54,18 +42,32 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Image display styles */
+        #popupImage {
+            position: absolute;
+            top: 10%; /* Adjust as needed */
+            left: 50%;
+            transform: translate(-50%, 0);
+            width: 400px; /* Set desired width */
+            height: auto; /* Maintain aspect ratio */
+            display: none;
+            z-index: 20;
+            cursor: move; /* Change cursor to indicate draggable */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 id="title">于胡倩是色Bee</h1>
         <button id="showImageButton">点击查看色Bee</button>
-        <img id="popupImage" src="" alt="弹出图片" loading="lazy"/> <!-- 添加懒加载 -->
+        <img id="popupImage" src="" alt="弹出图片" />
     </div>
     <canvas id="fireworksCanvas"></canvas>
     <script>
         const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -184,7 +186,7 @@
         }, 1000);
 
         // Image display logic
-        const imageUrl = 'https://hsqs.bmwax.cn/202410161218/36d0c6f04a51c8a38a8df99c4478a1ab/mqrcode%2F737564%2F1729052273_9808787521_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20241016101632.jpg'; // Replace with your image URL
+        const imageUrl = 'D:/微信图片_20241016101632.jpg'; // Replace with your image URL
         const popupImage = document.getElementById('popupImage');
 
         document.getElementById('showImageButton').addEventListener('click', function() {
