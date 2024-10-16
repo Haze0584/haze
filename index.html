@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有趣的网页</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('D:/微信图片_20241016101632.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Pacifico', cursive;
+            overflow: hidden;
+            position: relative;
+        }
+        .message {
+            font-size: 6em;
+            animation: fadeInDown 1s ease-in-out, bounce 1.5s infinite;
+            text-shadow: 3px 3px 20px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            color: white; /* 文字颜色 */
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            filter: blur(10px);
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="message animate__animated">胡倩是色bee</div>
+</body>
+</html>
