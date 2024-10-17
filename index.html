@@ -9,7 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: #282c34;
+            background: linear-gradient(135deg, #282c34, #1d1f21);
             color: white;
             display: flex;
             flex-direction: column;
@@ -26,13 +26,34 @@
             position: relative;
             z-index: 10;
             padding: 20px;
+            border: 2px solid #ff0044;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(255, 0, 68, 0.6);
         }
 
         h1 {
-            font-size: 48px;
+            font-size: 56px;
             margin: 0;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 2px 2px 15px rgba(255, 0, 68, 0.9);
             transition: color 1s ease;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 22px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff0044;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #ff3366;
+            transform: scale(1.05) rotate(5deg);
         }
 
         canvas {
@@ -41,9 +62,9 @@
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none; /* Prevent interaction with canvas */
         }
 
-        /* Image display styles */
         #popupImage {
             position: absolute;
             top: 10%; /* Adjust as needed */
@@ -54,6 +75,33 @@
             display: none;
             z-index: 20;
             cursor: move; /* Change cursor to indicate draggable */
+            box-shadow: 0 0 20px rgba(255, 0, 68, 0.8);
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        
+        #popupImage:hover {
+            transform: scale(1.05);
+        }
+
+        video {
+            display: none;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 68, 0.8);
+        }
+
+        #tip {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 0, 68, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 30;
         }
     </style>
 </head>
@@ -61,13 +109,19 @@
     <div class="container">
         <h1 id="title">于胡倩是色Bee</h1>
         <button id="showImageButton">点击查看色Bee</button>
+        <button id="showVideoButton">查看视频</button>
+        <video id="popupVideo" controls>
+            <source id="videoSource" src="
+        " type="video/mp4">
+            你的浏览器不支持 video 标签。
+        </video>
         <img id="popupImage" src="" alt="弹出图片" />
+        <div id="tip">这是一个色Bee</div>
     </div>
     <canvas id="fireworksCanvas"></canvas>
     <script>
         const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -168,17 +222,9 @@
             }
         });
 
-        // Background color change
-        let bgColorIndex = 0;
-        const bgColors = ['#282c34', '#1d1f21', '#343a40'];
-        setInterval(() => {
-            document.body.style.backgroundColor = bgColors[bgColorIndex];
-            bgColorIndex = (bgColorIndex + 1) % bgColors.length;
-        }, 5000);
-
         // Title color change
         const title = document.getElementById('title');
-        const titleColors = ['#ff0044', '#00ff44', '#0044ff', '#ff8800', '#8800ff'];
+        const titleColors = ['#ff0044', '#ff8800', '#ffff00', '#00ff44', '#0044ff'];
         let titleColorIndex = 0;
         setInterval(() => {
             title.style.color = titleColors[titleColorIndex];
@@ -186,7 +232,7 @@
         }, 1000);
 
         // Image display logic
-        const imageUrl = 'https://hsqs.bmwax.cn/202410161218/36d0c6f04a51c8a38a8df99c4478a1ab/mqrcode%2F737564%2F1729052273_9808787521_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20241016101632.jpg'; // Replace with your image URL
+        const imageUrl = 'https://hsqs.bmwax.cn/202410161218/36d0c6f04a51c8a38a8df99c4478a1ab/mqrcode%2F737564%2F1729052273_9808787521_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20241016101632.jpg'; // 替换为你的图片 URL
         const popupImage = document.getElementById('popupImage');
 
         document.getElementById('showImageButton').addEventListener('click', function() {
@@ -194,31 +240,32 @@
             popupImage.style.display = 'block';
             setTimeout(() => {
                 popupImage.style.display = 'none';
-            }, 10000); // 10 seconds
+            }, 3000); // 10 seconds
         });
 
-        // Dragging functionality for the image
-        let isDragging = false;
-        let offsetX, offsetY;
+        // Video display logic
+        const videoUrl = './WeChat_20241017172846.mp4'; // 替换为你的视频 URL
+        const popupVideo = document.getElementById('popupVideo');
+        const videoSource = document.getElementById('videoSource');
 
-        popupImage.addEventListener('mousedown', function(event) {
-            isDragging = true;
-            offsetX = event.clientX - (popupImage.getBoundingClientRect().left + window.scrollX);
-            offsetY = event.clientY - (popupImage.getBoundingClientRect().top + window.scrollY);
-            popupImage.style.cursor = 'grabbing';
+        document.getElementById('showVideoButton').addEventListener('click', function() {
+            videoSource.src = videoUrl;
+            popupVideo.style.display = 'block';
+            popupVideo.load();
+            popupVideo.play();
         });
 
-        document.addEventListener('mousemove', function(event) {
-            if (isDragging) {
-                popupImage.style.left = `${event.clientX - offsetX}px`;
-                popupImage.style.top = `${event.clientY - offsetY}px`;
-            }
+        // 可选择添加关闭视频的逻辑，比如点击视频以关闭
+        popupVideo.addEventListener('click', function() {
+            popupVideo.style.display = 'none';
+            popupVideo.pause();
         });
 
-        document.addEventListener('mouseup', function() {
-            isDragging = false;
-            popupImage.style.cursor = 'move';
-        });
+        // Tip display logic
+        const tip = document.getElementById('tip');
+        setTimeout(() => {
+            tip.style.display = 'block';
+        }, 2000); // 2 seconds delay
     </script>
 </body>
 </html>
